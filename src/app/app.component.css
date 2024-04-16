@@ -140,16 +140,19 @@ nav ul li a {
   color: #666666;
 }
 
+.active-button {
+  background: linear-gradient(90deg, #B0B0B0 0%, #E7E7E7 49%, #BBBBBB 100%);
+  mix-blend-mode: darken;
+}
+
 nav .icon {
   height: 5vh;
   padding: 0 0.5em;
-}
-
-router-outlet {
-  width: 100%;
 }
 
 footer {
   color: #666666;
   text-align: center;
 }
+
+

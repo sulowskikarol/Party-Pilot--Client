@@ -4,7 +4,8 @@
     <input type="text" placeholder="Szukaj..." #search>
     <img src="../assets/icons/search.png" alt="lupa">
   </div>
-  <button class="profile-button">
+  <button class="profile-button"
+          routerLink="/profile">
     <label>Profil</label>
     <img src="assets/profilowe.png" alt="zdjęcie użytkownika">
   </button>
@@ -18,28 +19,29 @@
     </div>
     <nav>
       <ul>
-        <li><a href="/discover">
+        <li><a routerLink="/discover"
+               routerLinkActive="active-button">
           <img src="assets/icons/compass.svg" class="icon">
           Odkrywaj
         </a></li>
-        <li><a href="/osberved">
+        <li><a routerLink="/observed"
+               routerLinkActive="active-button">
           <img src="assets/icons/bell.svg" class="icon">
           <label>Obserwowane</label>
         </a></li>
-        <li><a href="/organize">
-          <img src="assets/icons/roll_alt.svg" class="icon">
+        <li><a routerLink="/organise"
+               routerLinkActive="active-button">
+        <img src="assets/icons/roll_alt.svg" class="icon">
           <label>Zorganizuj</label>
         </a></li>
-        <li><a href="/friends">
-          <img src="assets/icons/group.svg" class="icon">
-          <label>Znajomi</label>
-        </a></li>
-        <li><a href="/profile">
-          <img src="assets/icons/profile.svg" class="icon">
+        <li><a routerLink="/profile"
+               routerLinkActive="active-button">
+        <img src="assets/icons/profile.svg" class="icon">
           <label>Profil</label>
         </a></li>
-        <li><a href="/logout">
-          <img src="assets/icons/sign_out.svg" class="icon">
+        <li><a routerLink="/logout"
+               routerLinkActive="active-button">
+        <img src="assets/icons/sign_out.svg" class="icon">
           <label>Wyloguj</label>
         </a></li>
       </ul>
