@@ -1,0 +1,51 @@
+<header>
+  <img src="assets/logo.png" alt="logo" id="logo">
+  <div class="search-bar">
+    <input type="text" placeholder="Szukaj..." #search>
+    <img src="../assets/icons/search.png" alt="lupa">
+  </div>
+  <button class="profile-button"
+          routerLink="/main/profile">
+    <label>Profil</label>
+    <img src="assets/profilowe.png" alt="zdjęcie użytkownika">
+  </button>
+</header>
+
+<main>
+  <div class="left-bar">
+    <div class="identity-space">
+      <img src="assets/profilowe.png" alt="zdjęcie profilowe">
+      <p>Jan Kowalski</p>
+    </div>
+    <nav>
+      <ul>
+        <li><a routerLink="/main/discover"
+               routerLinkActive="active-button">
+          <img src="assets/icons/compass.svg" class="icon">
+          Odkrywaj
+        </a></li>
+        <li><a routerLink="/main/observed"
+               routerLinkActive="active-button">
+          <img src="assets/icons/bell.svg" class="icon">
+          <label>Obserwowane</label>
+        </a></li>
+        <li><a routerLink="/main/organise"
+               routerLinkActive="active-button">
+          <img src="assets/icons/roll_alt.svg" class="icon">
+          <label>Zorganizuj</label>
+        </a></li>
+        <li><a routerLink="/main/profile"
+               routerLinkActive="active-button">
+          <img src="assets/icons/profile.svg" class="icon">
+          <label>Profil</label>
+        </a></li>
+        <li><a routerLink="/auth/login"
+               routerLinkActive="active-button">
+          <img src="assets/icons/sign_out.svg" class="icon">
+          <label>Wyloguj</label>
+        </a></li>
+      </ul>
+    </nav>
+  </div>
+  <router-outlet></router-outlet>
+</main>

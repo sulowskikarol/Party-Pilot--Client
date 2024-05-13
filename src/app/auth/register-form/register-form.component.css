@@ -1,0 +1,51 @@
+section {
+  margin: 0 3em;
+  height: 100%;
+  max-width: 20em;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+h4 {
+  font-size: 0.9em;
+}
+
+form {
+  width: 100%;
+}
+
+input, button {
+  padding: 0.6em 1em;
+  width: -webkit-fill-available;
+  font-size: 0.9em;
+  margin-top: 1.5em;
+}
+
+@media screen and (max-width: 1100px) {
+  section {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 730px) {
+  section {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  section {
+    font-size: 16px;
+    align-items: center;
+  }
+
+  h1 {
+    display: none;
+  }
+}
