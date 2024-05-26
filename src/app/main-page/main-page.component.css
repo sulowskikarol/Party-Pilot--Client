@@ -68,17 +68,25 @@ header #logo {
 /* main */
 
 main {
-  background: #FFFFFF;
-  width: 80vw;
-  height: 80vh;
-  margin: 2vh 10vw;
-  border-radius: 0.5em;
   display: flex;
+  background: #FFFFFF;
+  width: calc(100vw - 25em);
+  height: 80vh;
+  margin: 2vh auto;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+}
+
+.render-space {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
 }
 
 .left-bar {
-  width: 25%;
-  max-width: 25em;
+  width: 18vw;
+  max-width: 20em;
+  flex: none;
   height: 100%;
 }
 

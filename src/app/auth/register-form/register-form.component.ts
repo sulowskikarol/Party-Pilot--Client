@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {AxiosService} from "../../axios.service";
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-register-form',
@@ -10,38 +12,46 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
     RouterLink
   ],
   template: `
-    <section>
-      <h1>Dołącz do Party Pilot!</h1>
-      <form [formGroup]="registerForm" (submit)="submitLogin()">
-        <input id="email" type="text" formControlName="email" placeholder="Adres Email">
-
-        <input id="password" type="password" formControlName="password" placeholder="Hasło">
-
-        <input id="c_password" type="password" formControlName="c_password" placeholder="Powtórz hasło">
-        <button type="submit" class="login-button">Zarejestruj</button>
-      </form>
-      <h4>Jesteś już użytkownikiem Party Pilot? <a routerLink="/auth/login">Zaloguj się</a></h4>
-      <h4><a routerLink="/main/discover">Przejście dla personelu :)</a></h4>
-    </section>
+    <div class="wrapper">
+      <section>
+        <h1>Dołącz do Party Pilot!</h1>
+        <form [formGroup]="registerForm" (submit)="onSubmitRegister()">
+          <input id="firstName" type="text" formControlName="firstName" placeholder="Imie">
+          <input id="lastName" type="text" formControlName="lastName" placeholder="Nazwisko">
+          <input id="phoneNumber" type="text" formControlName="phoneNumber" placeholder="Numer telefonu">
+          <input id="email" type="text" formControlName="email" placeholder="Adres Email">
+          <input id="password" type="password" formControlName="password" placeholder="Hasło">
+          <button type="submit" class="login-button">Zarejestruj</button>
+        </form>
+        <h4>Jesteś już użytkownikiem Party Pilot? <a routerLink="/auth/login">Zaloguj się</a></h4>
+      </section>
+    </div>
   `,
   styleUrl: './register-form.component.css'
 })
 export class RegisterFormComponent {
+
+  authService: AuthService = inject(AuthService);
+  axiosService: AxiosService = inject(AxiosService);
+  router: Router = inject(Router);
+
   registerForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
     email: new FormControl(''),
-    password: new FormControl(''),
-    c_password: new FormControl('')
+    phoneNumber: new FormControl(''),
+    password: new FormControl('')
   });
 
-  constructor(private router: Router) {
-  }
-  submitLogin() {
-/*    this.service.functionInService(
-      this.registerForm.value.email ?? '',
-      this.registerForm.value.password ?? '',
-      this.registerForm.value.c_password ?? ''
-    );*/
-    console.log('Zarejestrowano');
-    this.router.navigate(['/main/discover']);
+  onSubmitRegister() {
+    this.axiosService.request(
+      "POST",
+      "/register",
+      this.registerForm.getRawValue()
+    ).then((response) => {
+      this.axiosService.setAuthToken(response.data.token);
+      this.authService.setUserId(response.data.id);
+      this.router.navigate(["/main/discover"]);
+    });
   }
 }

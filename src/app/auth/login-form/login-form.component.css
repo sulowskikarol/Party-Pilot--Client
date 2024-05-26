@@ -1,24 +1,10 @@
-/*section {*/
-/*  margin: 5rem 3rem;*/
-/*  font-size: 18px;*/
-/*  display: flex;*/
-/*  flex-direction: column;*/
-/*}*/
-
-/*h1 {*/
-/*  font-size: 1.5em;*/
-/*}*/
-
-/*form {*/
-/*  width: 100%;*/
-/*}*/
-
-/*input, button {*/
-/*  padding: 0.6em 1em;*/
-/*  width: -webkit-fill-available;*/
-/*  font-size: 0.9em;*/
-/*  margin-top: 1.5em;*/
-/*}*/
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 section {
   margin: 0 3em;

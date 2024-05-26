@@ -1,1 +1,13 @@
-<p>discover works!</p>
+<div class="event-container">
+  <h1>Wydarzenia zyskujące popularność</h1>
+  <div class="events-grid">
+    <div class="event-card" *ngFor="let event of eventsFromDb" [routerLink]="['/main/event', event.id]">
+      <img [src]="banners[event.id]" alt="Event banner">
+      <div class="event-info">
+        <div class="event-time">{{ event.start_time | date: "EEE, d MMM 'at' hh:mm" }}</div>
+        <div class="event-name">{{ event.eventName }}</div>
+        <div class="event-location">{{ event.location }}</div>
+      </div>
+    </div>
+  </div>
+</div>

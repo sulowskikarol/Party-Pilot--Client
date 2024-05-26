@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterOutlet} from "@angular/router";
+import {AxiosService} from "../axios.service";
 
 @Component({
   selector: 'app-auth',
@@ -20,5 +21,4 @@ import {RouterOutlet} from "@angular/router";
   styleUrl: './auth.component.css'
 })
 export class AuthComponent {
-
 }

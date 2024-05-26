@@ -7,15 +7,15 @@
   <button class="profile-button"
           routerLink="/main/profile">
     <label>Profil</label>
-    <img src="assets/profilowe.png" alt="zdjęcie użytkownika">
+    <img [src]="'/assets/' + userDetails?.profilePhotoPath" alt="zdjęcie użytkownika">
   </button>
 </header>
 
 <main>
   <div class="left-bar">
     <div class="identity-space">
-      <img src="assets/profilowe.png" alt="zdjęcie profilowe">
-      <p>Jan Kowalski</p>
+      <img [src]="'/assets/' + userDetails?.profilePhotoPath" alt="zdjęcie profilowe">
+      <p>{{userDetails?.firstName + " " + userDetails?.lastName}}</p>
     </div>
     <nav>
       <ul>
@@ -29,7 +29,7 @@
           <img src="assets/icons/bell.svg" class="icon">
           <label>Obserwowane</label>
         </a></li>
-        <li><a routerLink="/main/organise"
+        <li><a routerLink="/main/organize"
                routerLinkActive="active-button">
           <img src="assets/icons/roll_alt.svg" class="icon">
           <label>Zorganizuj</label>
@@ -39,13 +39,14 @@
           <img src="assets/icons/profile.svg" class="icon">
           <label>Profil</label>
         </a></li>
-        <li><a routerLink="/auth/login"
-               routerLinkActive="active-button">
+        <li><a (click)="onLogout()">
           <img src="assets/icons/sign_out.svg" class="icon">
           <label>Wyloguj</label>
         </a></li>
       </ul>
     </nav>
   </div>
-  <router-outlet></router-outlet>
+  <div class="render-space">
+    <router-outlet></router-outlet>
+  </div>
 </main>

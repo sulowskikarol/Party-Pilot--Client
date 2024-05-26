@@ -1,0 +1,17 @@
+<div class="event-details-wrapper">
+  <div class="event-header">
+    <img [src]="bannerUrl" alt="Banner wydarzenia" class="event-banner">
+    <h1>{{ eventDetails.eventName }}</h1>
+    <p class="event-date">{{ eventDetails.start_time | date: 'longDate' }} at {{ eventDetails.start_time | date: 'shortTime' }}</p>
+    <p class="event-location">{{ eventDetails.location }}</p>
+  </div>
+  <div class="event-body">
+    <h2>Description</h2>
+    <p>{{ eventDetails.description }}</p>
+    <h2>Event Details</h2>
+    <p><strong>Start:</strong> {{ eventDetails.start_time | date: 'fullDate' }} at {{ eventDetails.start_time | date: 'shortTime' }}</p>
+    <p><strong>End:</strong> {{ eventDetails.end_time | date: 'fullDate' }} at {{ eventDetails.end_time | date: 'shortTime' }}</p>
+    <p><strong>Status:</strong> {{ eventDetails.status }}</p>
+  </div>
+  <button (click)="backToDiscover()" class="back-button">Back to Discover</button>
+</div>

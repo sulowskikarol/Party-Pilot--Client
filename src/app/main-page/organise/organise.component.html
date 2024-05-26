@@ -1,1 +1,110 @@
-<p>organise works!</p>
+<div class="event-form-container" >
+  <div class="form-header">
+    <h2>Organizuj wydarzenie</h2>
+  </div>
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="event-name">Nazwa wydarzenia</label>
+      <input type="text"
+             id="event-name"
+             formControlName="event_name"
+             placeholder="Tytuł"
+             [ngClass]="{'invalid-alert': eventForm.get('event_name')?.invalid && eventForm.get('event_name')?.touched}"
+      >
+      <div class="invalid-alert" *ngIf="eventForm.get('event_name')?.invalid && eventForm.get('event_name')?.touched">
+        Nazwa wydarzenia jest wymagana.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="description">Opis</label>
+      <textarea id="description"
+                formControlName="description"
+                [ngClass]="{'invalid-alert': eventForm.get('description')?.invalid && eventForm.get('description')?.touched}"
+      ></textarea>
+      <div class="invalid-alert" *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched">
+        Opis wydarzenia jest wymagany.
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="start-date">Data rozpoczęcia</label>
+        <input type="date"
+               id="start-date"
+               formControlName="start_date"
+               [ngClass]="{'invalid-alert': (eventForm.get('start_date')?.invalid && eventForm.get('start_date')?.touched) ||
+                  (eventForm.hasError('startDateTimeInvalid') && eventForm.get('start_date')?.touched && eventForm.get('start_time')?.touched)}"
+        >
+        <div class="invalid-alert" *ngIf="eventForm.get('start_date')?.invalid && eventForm.get('start_date')?.touched">
+          Data rozpoczęcia jest wymagana.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="start-time">Godzina rozpoczęcia</label>
+        <input type="time"
+               id="start-time"
+               formControlName="start_time"
+               [ngClass]="{'invalid-alert': (eventForm.get('start_time')?.invalid && eventForm.get('start_time')?.touched) ||
+                  (eventForm.hasError('startDateTimeInvalid') && eventForm.get('start_date')?.touched && eventForm.get('start_time')?.touched)}"
+        >
+        <div class="invalid-alert" *ngIf="eventForm.get('start_time')?.invalid && eventForm.get('start_time')?.touched">
+          Godzina rozpoczęcia jest wymagana.
+        </div>
+      </div>
+    </div>
+    <div class="invalid-alert" *ngIf="eventForm.hasError('startDateTimeInvalid') && eventForm.get('start_date')?.touched && eventForm.get('start_time')?.touched">
+      Czas rozpoczęcia już minął.
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="end-date">Data zakończenia</label>
+        <input type="date"
+               id="end-date"
+               formControlName="end_date"
+               [ngClass]="{'invalid-alert': (eventForm.get('end_date')?.invalid && eventForm.get('end_date')?.touched) ||
+                  (eventForm.hasError('endDateTimeInvalid') && eventForm.get('end_date')?.touched && eventForm.get('end_time')?.touched)}"
+        >
+        <div class="invalid-alert" *ngIf="eventForm.get('end_date')?.invalid && eventForm.get('end_date')?.touched">
+          Data zakończenia jest wymagana.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="end-time">Godzina zakończenia</label>
+        <input type="time"
+               id="end-time"
+               formControlName="end_time"
+               [ngClass]="{'invalid-alert': (eventForm.get('end_time')?.invalid && eventForm.get('end_time')?.touched) ||
+                  (eventForm.hasError('endDateTimeInvalid') && eventForm.get('end_date')?.touched && eventForm.get('end_time')?.touched)}"
+        >
+        <div class="invalid-alert" *ngIf="eventForm.get('end_time')?.invalid && eventForm.get('end_time')?.touched">
+          Czas zakończenia jest wymagany.
+        </div>
+      </div>
+    </div>
+    <div class="invalid-alert" *ngIf="eventForm.hasError('endDateTimeInvalid') && eventForm.get('end_date')?.touched && eventForm.get('end_time')?.touched">
+      Czas zakończenia musi być poźniejszy niż czas rozpoczęcia wydarzenia.
+    </div>
+    <div class="form-group">
+      <label for="location">Lokalizacja</label>
+      <input type="text" id="location"
+             formControlName="location"
+             placeholder="Adres"
+             [ngClass]="{'invalid-alert': eventForm.get('location')?.invalid && eventForm.get('location')?.touched}"
+      >
+      <div class="invalid-alert" *ngIf="eventForm.get('location')?.invalid && eventForm.get('location')?.touched">
+        Lokalizacja jest wymagana.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="upload-photo">Dodaj zdjęcie</label>
+      <input type="file"
+             id="upload-photo"
+             (change)="onFileChange($event)"
+             [ngClass]="{'invalid-alert': bannerError}"
+      >
+      <div class="invalid-alert" *ngIf="bannerError">
+        {{ bannerError }}
+      </div>
+    </div>
+    <button type="submit" [disabled]="eventForm.invalid">Opublikuj</button>
+  </form>
+</div>
