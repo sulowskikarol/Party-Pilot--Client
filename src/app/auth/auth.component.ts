@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterOutlet} from "@angular/router";
-import {AxiosService} from "../axios.service";
+import {AxiosService} from "../services/axios.service";
 
 @Component({
   selector: 'app-auth',

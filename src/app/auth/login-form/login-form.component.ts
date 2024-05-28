@@ -1,9 +1,9 @@
 import {Component, EventEmitter, inject, Output} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
-import {AxiosService} from "../../axios.service";
-import {AuthService} from "../auth.service";
-import {UserInterface} from "../../user";
+import {AxiosService} from "../../services/axios.service";
+import {AuthService} from "../../services/auth.service";
+import {User} from "../../models/user";
 
 @Component({
   selector: 'app-login-form',

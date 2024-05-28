@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
-import {UserInterface} from "../user";
+import {User} from "../models/user";
 import {ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot} from "@angular/router";
-import {AxiosService} from "../axios.service";
+import {AxiosService} from "./axios.service";
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class AuthService {
     return window.localStorage.getItem("userid");
   }
 
-  async getUserDetails(): Promise<UserInterface | null> {
+  async getUserDetails(): Promise<User | null> {
     try {
       const response = await this.axiosService.request(
         'GET',

@@ -1,8 +1,9 @@
 import {Component, inject} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
-import {AxiosService} from "../axios.service";
-import {AuthService} from "../auth/auth.service";
-import {UserInterface} from "../user";
+import {AxiosService} from "../services/axios.service";
+import {AuthService} from "../services/auth.service";
+import {User} from "../models/user";
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-main-page',
@@ -18,7 +19,10 @@ import {UserInterface} from "../user";
 export class MainPageComponent {
 
   authService: AuthService = inject(AuthService);
-  userDetails: UserInterface | null = null;
+  userService: UserService = inject(UserService);
+  userDetails: User | null = null;
+  photoUrl: string | null = null;
+
   constructor(private axiosService: AxiosService, private router: Router) {
   }
 
@@ -28,6 +32,7 @@ export class MainPageComponent {
 
   async loadUserDetails(): Promise<void> {
     this.userDetails = await this.authService.getUserDetails();
+    this.photoUrl = await this.userService.getProfilePhoto(this.userDetails?.profilePhotoPath);
   }
   onLogout(): void {
     this.axiosService.setAuthToken(null);

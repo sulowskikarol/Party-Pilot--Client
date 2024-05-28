@@ -1,52 +1,88 @@
-.event-details-wrapper {
-  max-width: 1200px;
-  margin: 20px auto;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+/*.event-details-wrapper {*/
+/*  max-width: 1200px;*/
+/*  margin: 20px auto;*/
+/*  border: 1px solid #ccc;*/
+/*  border-radius: 8px;*/
+/*  overflow: hidden;*/
+/*  background: #ffffff;*/
+/*  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
-.event-header {
-  text-align: center;
-  background-color: #f4f4f4;
-  padding: 20px;
-}
+/*.event-header {*/
+/*  text-align: center;*/
+/*  background-color: #f4f4f4;*/
+/*  padding: 20px;*/
+/*}*/
 
-.event-banner {
-  width: 100%;
-  height: 300px;
+/*.event-banner {*/
+/*  width: 100%;*/
+/*  height: 300px;*/
+/*  object-fit: cover;*/
+/*}*/
+
+/*.event-date, .event-location {*/
+/*  color: #666;*/
+/*  font-size: 18px;*/
+/*  margin-top: 10px;*/
+/*}*/
+
+/*.event-body {*/
+/*  padding: 20px;*/
+/*}*/
+
+/*.event-body h2 {*/
+/*  color: #333;*/
+/*  margin-top: 20px;*/
+/*}*/
+
+/*.back-button {*/
+/*  display: block;*/
+/*  width: 200px;*/
+/*  padding: 10px 20px;*/
+/*  margin: 20px auto;*/
+/*  background-color: #007BFF;*/
+/*  color: white;*/
+/*  border: none;*/
+/*  border-radius: 5px;*/
+/*  cursor: pointer;*/
+/*}*/
+
+/*.back-button:hover {*/
+/*  background-color: #0056b3;*/
+/*}*/
+
+
+/* event-details.component.css */
+.banner img {
+  max-height: 400px;
   object-fit: cover;
 }
 
-.event-date, .event-location {
-  color: #666;
-  font-size: 18px;
-  margin-top: 10px;
-}
-
-.event-body {
+.event-details {
+  background-color: #f8f9fa;
   padding: 20px;
-}
-
-.event-body h2 {
-  color: #333;
-  margin-top: 20px;
-}
-
-.back-button {
-  display: block;
-  width: 200px;
-  padding: 10px 20px;
-  margin: 20px auto;
-  background-color: #007BFF;
-  color: white;
-  border: none;
   border-radius: 5px;
-  cursor: pointer;
 }
 
-.back-button:hover {
-  background-color: #0056b3;
+.event-schedule {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.comments-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.comments-section .card {
+  border: none;
+  background-color: #f8f9fa;
+}
+
+.comments-section .card .card-body {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 15px;
 }

@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {DatePipe} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AxiosService} from "../../axios.service";
+import {AxiosService} from "../../services/axios.service";
 
 @Component({
   selector: 'app-event-details',
@@ -41,10 +41,11 @@ export class EventDetailsComponent {
         {}
       ).then((response) => {
           this.eventDetails = response.data;
+          this.eventDetails.startTime = new Date(response.data.startTime);
         });
       if (this.eventDetails.bannerPath) {
         this.bannerUrl = await this.axiosService.getImage(
-          '/events/banner/',
+          '/banners/',
           this.eventDetails.bannerPath
         );
       } else {

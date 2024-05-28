@@ -1,8 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {AxiosService} from "../../axios.service";
-import {AuthService} from "../auth.service";
+import {AxiosService} from "../../services/axios.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-register-form',

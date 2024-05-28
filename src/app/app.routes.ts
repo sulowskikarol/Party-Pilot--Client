@@ -7,7 +7,7 @@ import {AuthComponent} from "./auth/auth.component";
 import {LoginFormComponent} from "./auth/login-form/login-form.component";
 import {RegisterFormComponent} from "./auth/register-form/register-form.component";
 import {MainPageComponent} from "./main-page/main-page.component";
-import {isAuthenticatedGuard} from "./auth/auth.service";
+import {isAuthenticatedGuard} from "./services/auth.service";
 import {EventDetailsComponent} from "./main-page/event-details/event-details.component";
 
 
@@ -37,7 +37,7 @@ export const routes: Routes = [
       { path: 'discover', component: DiscoverComponent },
       { path: 'observed', component: ObservedComponent },
       { path: 'organize', component: OrganiseComponent },
-      { path: 'profile', component: ProfileComponent },
+      { path: 'profile/:id', component: ProfileComponent },
       { path: 'event/:id', component: EventDetailsComponent }
     ]
   },

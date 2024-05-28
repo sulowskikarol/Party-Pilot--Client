@@ -5,16 +5,16 @@
     <img src="../assets/icons/search.png" alt="lupa">
   </div>
   <button class="profile-button"
-          routerLink="/main/profile">
+          [routerLink]="'/main/profile/' + this.authService.getUserId()">
     <label>Profil</label>
-    <img [src]="'/assets/' + userDetails?.profilePhotoPath" alt="zdjęcie użytkownika">
+    <img [src]="photoUrl" alt="zdjęcie użytkownika">
   </button>
 </header>
 
 <main>
   <div class="left-bar">
     <div class="identity-space">
-      <img [src]="'/assets/' + userDetails?.profilePhotoPath" alt="zdjęcie profilowe">
+      <img [src]="photoUrl" alt="zdjęcie profilowe">
       <p>{{userDetails?.firstName + " " + userDetails?.lastName}}</p>
     </div>
     <nav>
@@ -34,7 +34,7 @@
           <img src="assets/icons/roll_alt.svg" class="icon">
           <label>Zorganizuj</label>
         </a></li>
-        <li><a routerLink="/main/profile"
+        <li><a [routerLink]="'/main/profile/' + this.authService.getUserId()"
                routerLinkActive="active-button">
           <img src="assets/icons/profile.svg" class="icon">
           <label>Profil</label>

@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {DatePipe, NgForOf, NgOptimizedImage} from "@angular/common";
 import {RouterLink} from "@angular/router";
-import {AxiosService} from "../../axios.service";
+import {AxiosService} from "../../services/axios.service";
 import {resolve} from "@angular/compiler-cli";
 
 @Component({
@@ -45,7 +45,7 @@ export class DiscoverComponent {
     try {
       for (const event of this.eventsFromDb) {
         if (event.bannerPath) {
-          this.banners[event.id] = await this.axiosService.getImage('/events/banner/', event.bannerPath);
+          this.banners[event.id] = await this.axiosService.getImage('/banners/', event.bannerPath);
         } else {
           this.banners[event.id] = 'assets/default_banner.jpg'
         }

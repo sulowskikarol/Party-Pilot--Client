@@ -8,10 +8,10 @@ import {
   ValidationErrors,
   Validators
 } from "@angular/forms";
-import {AxiosService} from "../../axios.service";
+import {AxiosService} from "../../services/axios.service";
 import {CommonModule} from "@angular/common";
 import {Router} from "@angular/router";
-import {AuthService} from "../../auth/auth.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-organise',
@@ -142,8 +142,6 @@ export class OrganiseComponent {
         "/events",
         formData
       ).then(response => {
-        console.log('Przesłane dane:\n', requestData);
-        console.log('Otrzymana odpowiedź:\n', response.data);
         this.router.navigate([`/main/event/${response.data.id}`]);
       });
     } else {
