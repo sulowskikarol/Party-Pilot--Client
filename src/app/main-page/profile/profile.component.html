@@ -2,10 +2,13 @@
   <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
     <div class="profile-image">
       <img id="profilePic" [src]="photoUrl" alt="Profile Picture">
-      <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)">
-      <label for="fileInput" class="upload-icon">
+      <input *ngIf="canEdit" type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)">
+      <label *ngIf="canEdit" for="fileInput" class="upload-icon">
         <img src="assets/icons/edit.png" alt="Upload Icon">
       </label>
+    </div>
+    <div class="invalid-alert" *ngIf="photoError">
+      {{ photoError }}
     </div>
     <div class="profile-details">
         <div class="field">
@@ -13,34 +16,47 @@
           <input type="text"
                  id="first-name"
                  placeholder="Imię"
-                 [value]="user?.firstName"
-                 formControlName="firstName">
+                 formControlName="firstName"
+                 [class]="{'invalid-alert' : profileForm.get('firstName')?.invalid}"
+          >
+          <div class="invalid-alert" *ngIf="profileForm.get('firstName')?.invalid">
+            Imie jest wymagane.
+          </div>
         </div>
         <div class="field">
           <label for="last-name">Nazwisko</label>
           <input type="text"
                  id="last-name"
                  placeholder="Nazwisko"
-                 [value]="user?.lastName"
-                 formControlName="lastName">
+                 formControlName="lastName"
+                 [class]="{'invalid-alert' : profileForm.get('lastName')?.invalid}"
+          >
+          <div class="invalid-alert" *ngIf="profileForm.get('lastName')?.invalid">
+            Nazwisko jest wymagane.
+          </div>
         </div>
         <div class="field">
           <label for="phone">Numer Telefonu</label>
           <input type="tel"
                  id="phone"
                  placeholder="Numer Telefonu"
-                 [value]="user?.phoneNumber"
-                 formControlName="phoneNumber">
+                 formControlName="phoneNumber"
+                 [class]="{'invalid-alert': profileForm.get('phoneNumber')?.invalid}"
+          >
+          <div class="invalid-alert" *ngIf="profileForm.get('phoneNumber')?.invalid">
+            Numer telefonu jest wymagany.
+          </div>
         </div>
         <div class="field">
           <label for="email">Adres Email</label>
           <input type="email"
                  id="email"
                  placeholder="Adres Email"
-                 [value]="user?.email"
+                 [value]="profileForm.get('email')?.value"
                  disabled>
         </div>
-      <button type="submit">Potwierdź</button>
+      <button *ngIf="canEdit" type="button" (click)="onCancel()">Anuluj</button>
+      <button *ngIf="canEdit" [disabled]="profileForm.invalid" type="submit">Potwierdź</button>
     </div>
   </form>
 </div>

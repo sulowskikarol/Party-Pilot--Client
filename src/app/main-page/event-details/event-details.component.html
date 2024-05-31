@@ -28,21 +28,25 @@
     <div class="row">
       <div class="col-md-8">
         <h1 class="display-4">{{ eventDetails.eventName }}</h1>
-        <p class="lead"><strong>Start:</strong> {{ eventDetails.startTime | date:'fullDate' }} at {{ eventDetails.startTime | date:'shortTime' }}</p>
-        <p class="lead"><strong>End:</strong> {{ eventDetails.endTime | date:'fullDate' }} at {{ eventDetails.endTime | date:'shortTime' }}</p>
-        <p class="lead"><strong>Location:</strong> {{ eventDetails.location }}</p>
+        <p class="lead"><strong>Rozpoczęcie:</strong>
+          {{ eventDetails.startTime | date:'fullDate' }} at {{ eventDetails.startTime | date:'shortTime' }}
+        </p>
+        <p class="lead"><strong>Zakończenie:</strong>
+          {{ eventDetails.endTime | date:'fullDate' }} at {{ eventDetails.endTime | date:'shortTime' }}
+        </p>
+        <p class="lead"><strong>Lokalizacja:</strong> {{ eventDetails.location }}</p>
         <p>{{ eventDetails.description }}</p>
       </div>
       <div class="col-md-4 text-center">
-        <button class="btn btn-primary btn-lg my-2">Register Now</button>
-        <button class="btn btn-secondary btn-lg my-2">Add to Calendar</button>
+        <button class="btn btn-primary btn-lg my-2">Zapisz się</button>
+        <button class="btn btn-secondary btn-lg my-2">Dodaj do obserwowanych</button>
       </div>
     </div>
   </div>
 
   <!-- Event Schedule -->
   <div class="event-schedule mb-4">
-    <h2>Event Schedule</h2>
+    <h2>Uczestnicy</h2>
     <div class="row">
       <div class="col-md-4 mb-3" *ngFor="let item of eventDetails.schedule">
         <div class="card h-100">

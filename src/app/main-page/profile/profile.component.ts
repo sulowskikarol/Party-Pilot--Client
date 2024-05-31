@@ -4,13 +4,16 @@ import {User} from "../../models/user";
 import {UserService} from "../../services/user.service";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AxiosService} from "../../services/axios.service";
+import {NgIf} from "@angular/common";
+import {AuthService} from "../../services/auth.service";
 
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
@@ -18,41 +21,57 @@ import {AxiosService} from "../../services/axios.service";
 export class ProfileComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   userService: UserService = inject(UserService);
+  authService: AuthService = inject(AuthService);
   axiosService: AxiosService = inject(AxiosService);
 
-  userId: string | null = null;
-  user: User | null = null;
-
+  userIdFromPath: string | null = null;
   photoUrl: string | ArrayBuffer | null = null;
   selectedPhoto: File | null = null;
   photoError: string | null = null;
+  canEdit: boolean = false;
 
   profileForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    phoneNumber: new FormControl(''),
-    profilePhotoPath: new FormControl('')
+    firstName: new FormControl('', Validators.required),
+    lastName: new FormControl('', Validators.required),
+    phoneNumber: new FormControl('', Validators.required),
+    profilePhotoPath: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required)
   })
 
   ngOnInit() {
       this.route.paramMap.subscribe(params => {
-          this.userId = params.get('id');
-          if (this.userId) {
-              this.getUserData(this.userId);
+          this.userIdFromPath = params.get('id');
+          if (this.userIdFromPath) {
+              this.getUserData(this.userIdFromPath);
+          }
+          this.canEdit = this.authService.getUserId() === this.userIdFromPath;
+          if (!this.canEdit) {
+            this.profileForm.disable();
+          } else {
+            this.profileForm.enable();
           }
       })
   }
 
   async getUserData(userId: string): Promise<void> {
-    this.user = await this.userService.getUserData(userId);
-    this.photoUrl = await this.userService.getProfilePhoto(this.user?.profilePhotoPath)
+    const user = await this.userService.getUserData(userId);
+    if (user) {
+      this.profileForm.patchValue({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumber: user.phoneNumber,
+        profilePhotoPath: user.profilePhotoPath,
+        email: user.email,
+      })
+      this.photoUrl = await this.userService.getProfilePhoto(user.profilePhotoPath)
+    }
   }
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       const file = input.files[0];
-      const maxSize = 25 * 1024 * 1024; // 25MB
+      const maxSize = 4 * 1024 * 1024; // 4MB
 
       if (!file.type.startsWith('image/')) {
         this.photoError = 'Wybrany plik musi być obrazem';
@@ -78,12 +97,6 @@ export class ProfileComponent {
 
   onSubmit() {
     if (this.profileForm.valid) {
-      if (!this.selectedPhoto) {
-        this.profileForm.patchValue({
-          profilePhotoPath: this.user?.profilePhotoPath
-        })
-      }
-
       const requestData = {
         firstName: this.profileForm.get('firstName')?.value,
         lastName: this.profileForm.get('lastName')?.value,
@@ -99,7 +112,7 @@ export class ProfileComponent {
 
       this.axiosService.request(
         "PUT",
-        "/users/" + this.userId,
+        "/users/" + this.userIdFromPath,
         formData
       ).then(response => {
         window.location.reload();
@@ -107,5 +120,9 @@ export class ProfileComponent {
     } else {
       console.error("Form is invalid");
     }
+  }
+
+  onCancel() {
+    window.location.reload();
   }
 }
