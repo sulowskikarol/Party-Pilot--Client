@@ -1,24 +1,31 @@
-import {Component, inject} from '@angular/core';
-import {DatePipe} from "@angular/common";
+import {Component, inject, OnInit} from '@angular/core';
+import {CommonModule, DatePipe} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AxiosService} from "../../services/axios.service";
+import {EventService} from "../../services/event.service";
+import {EventDetails} from "../../models/event";
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
   imports: [
-    DatePipe
+    DatePipe,
+    CommonModule
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
-export class EventDetailsComponent {
+export class EventDetailsComponent implements OnInit {
   router: Router = inject(Router);
   route: ActivatedRoute = inject(ActivatedRoute);
   axiosService: AxiosService = inject(AxiosService);
-  eventDetails: any = null;
+  eventService: EventService = inject(EventService);
+
+  eventDetails: EventDetails | null = null;
+  userPhotos: {[key: string]: string} = {['default']: 'assets/default_banner.jpg'}
   bannerUrl: string | null = null;
   eventId: string | null = null;
+  loading: boolean = true;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -34,16 +41,10 @@ export class EventDetailsComponent {
   }
 
   async loadEventDetails(eventId: string) {
+    this.loading = true;
     try {
-      await this.axiosService.request(
-        "GET",
-        "/events/" + eventId,
-        {}
-      ).then((response) => {
-          this.eventDetails = response.data;
-          this.eventDetails.startTime = new Date(response.data.startTime);
-        });
-      if (this.eventDetails.bannerPath) {
+      this.eventDetails = await this.eventService.loadEventDetails(eventId);
+      if (this.eventDetails?.bannerPath) {
         this.bannerUrl = await this.axiosService.getImage(
           '/banners/',
           this.eventDetails.bannerPath
@@ -51,8 +52,28 @@ export class EventDetailsComponent {
       } else {
         this.bannerUrl = 'assets/default_banner.jpg'
       }
+      console.log(this.eventDetails)
+    } catch(error) {
+      console.error('Error loading event details', error);
+    } finally {
+      this.loading = false;
+      this.loadProfilePhotos();
+    }
+  }
+
+  async loadProfilePhotos() {
+    try {
+      if (this.eventDetails?.comments) {
+        for (const comment of this.eventDetails.comments) {
+          if (comment.userPhoto && !this.userPhotos[comment.userPhoto]) {
+            this.userPhotos[comment.userPhoto] = await this.axiosService.getImage('/photos/', comment.userPhoto);
+          } else if (!comment.userPhoto) {
+            comment.userPhoto = 'default';
+          }
+        }
+      }
     } catch (error) {
-      console.error('Error fetching event details or banner: ', error)
+      console.log('Error fetching banners: ', error);
     }
   }
 }

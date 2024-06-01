@@ -1,29 +1,8 @@
-<!--<div class="event-details-wrapper">-->
-<!--  <div class="event-header">-->
-<!--    <img [src]="bannerUrl" alt="Banner wydarzenia" class="event-banner">-->
-<!--    <h1>{{ eventDetails.eventName }}</h1>-->
-<!--    <p class="event-date">{{ eventDetails.startTime | date: 'longDate' }} at {{ eventDetails.startTime | date: 'shortTime' }}</p>-->
-<!--    <p class="event-location">{{ eventDetails.location }}</p>-->
-<!--  </div>-->
-<!--  <div class="event-body">-->
-<!--    <h2>Description</h2>-->
-<!--    <p>{{ eventDetails.description }}</p>-->
-<!--    <h2>Event Details</h2>-->
-<!--    <p><strong>Start:</strong> {{ eventDetails.startTime}} at {{ eventDetails.startTime}}</p>-->
-<!--    <p><strong>End:</strong> {{ eventDetails.end_time | date: 'fullDate' }} at {{ eventDetails.end_time | date: 'shortTime' }}</p>-->
-<!--    <p><strong>Status:</strong> {{ eventDetails.status }}</p>-->
-<!--  </div>-->
-<!--  <button (click)="backToDiscover()" class="back-button">Back to Discover</button>-->
-<!--</div>-->
-
-
-<div class="container mt-4">
-  <!-- Banner -->
+<div class="container mt-4" *ngIf="!loading && eventDetails; else loadingTemplate">
   <div class="banner mb-4">
     <img [src]="bannerUrl" class="img-fluid w-100" alt="Event Banner">
   </div>
 
-  <!-- Event Details -->
   <div class="event-details mb-4 p-4 bg-light rounded shadow-sm">
     <div class="row">
       <div class="col-md-8">
@@ -44,37 +23,26 @@
     </div>
   </div>
 
-  <!-- Event Schedule -->
-  <div class="event-schedule mb-4">
-    <h2>Uczestnicy</h2>
-    <div class="row">
-      <div class="col-md-4 mb-3" *ngFor="let item of eventDetails.schedule">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">{{ item.time | date:'shortTime' }} - {{ item.title }}</h5>
-            <p class="card-text">{{ item.description }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Comments Section -->
   <div class="comments-section mb-4">
-    <h2>Comments</h2>
-    <div class="card mb-3" *ngFor="let comment of eventDetails.comments">
-      <div class="row no-gutters">
-        <div class="col-md-2 text-center">
-          <img [src]="comment.avatarUrl" class="img-fluid rounded-circle mt-3" alt="Avatar">
-          <p class="mt-2">{{ comment.authorName }}</p>
-        </div>
-        <div class="col-md-10">
-          <div class="card-body">
-            <p class="card-text">{{ comment.content }}</p>
-            <p class="card-text"><small class="text-muted">{{ comment.date | date:'short' }}</small></p>
+    <h2>Komentarze</h2>
+    <div>
+      <div class="card mb-3" *ngFor="let comment of eventDetails?.comments">
+        <div class="row no-gutters">
+          <div class="col-md-2 text-center">
+            <img [src]="userPhotos[comment.userPhoto]" class="img-fluid rounded-circle mt-3" alt="Avatar">
+            <p class="mt-2">{{ comment.userFirstName }}</p>
+          </div>
+          <div class="col-md-10">
+            <div class="card-body">
+              <p class="card-text">{{ comment.commentContent }}</p>
+              <p class="card-text"><small class="text-muted">{{ comment.createdAt | date:'short' }}</small></p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<ng-template #loadingTemplate>
+  <p>Ładowanie...</p>
+</ng-template>
