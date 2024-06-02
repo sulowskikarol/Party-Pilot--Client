@@ -4,13 +4,16 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AxiosService} from "../../services/axios.service";
 import {EventService} from "../../services/event.service";
 import {EventDetails} from "../../models/event";
+import {FormsModule} from "@angular/forms";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
   imports: [
     DatePipe,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
@@ -19,6 +22,7 @@ export class EventDetailsComponent implements OnInit {
   router: Router = inject(Router);
   route: ActivatedRoute = inject(ActivatedRoute);
   axiosService: AxiosService = inject(AxiosService);
+  authService: AuthService = inject(AuthService);
   eventService: EventService = inject(EventService);
 
   eventDetails: EventDetails | null = null;
@@ -26,6 +30,7 @@ export class EventDetailsComponent implements OnInit {
   bannerUrl: string | null = null;
   eventId: string | null = null;
   loading: boolean = true;
+  commentContent: any;
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -74,6 +79,33 @@ export class EventDetailsComponent implements OnInit {
       }
     } catch (error) {
       console.log('Error fetching banners: ', error);
+    }
+  }
+
+  addComment() {
+    if (this.commentContent) {
+      const currentDate = new Date();
+      const newComment = {
+        commentContent: this.commentContent,
+        user_id: this.authService.getUserId(),
+        event_id: this.eventId,
+        createdAt: [
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          currentDate.getDate(),
+          currentDate.getHours(),
+          currentDate.getMinutes()
+        ]
+      }
+      this.axiosService.request(
+        "POST",
+        "/comments",
+        newComment
+      ).then (() => {
+        window.location.reload();
+      });
+    } else {
+      console.error('Komentarz nie może być pusty!')
     }
   }
 }

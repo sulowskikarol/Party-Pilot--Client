@@ -25,7 +25,18 @@
 
   <div class="comments-section mb-4">
     <h2>Komentarze</h2>
-    <div>
+    <!-- Add Comment Form -->
+    <div class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Dodaj komentarz</h5>
+        <form (ngSubmit)="addComment()">
+          <div class="form-group">
+            <label for="commentContent">Treść komentarza</label>
+            <textarea id="commentContent" class="form-control" [(ngModel)]="commentContent" name="commentContent" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Dodaj komentarz</button>
+        </form>
+      </div>
       <div class="card mb-3" *ngFor="let comment of eventDetails?.comments">
         <div class="row no-gutters">
           <div class="col-md-2 text-center">
