@@ -6,6 +6,7 @@ import {EventService} from "../../services/event.service";
 import {EventDetails} from "../../models/event";
 import {FormsModule} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
+import {Registration} from "../../models/registration";
 
 @Component({
   selector: 'app-event-details',
@@ -33,6 +34,7 @@ export class EventDetailsComponent implements OnInit {
   loading: boolean = true;
   commentContent: any;
   userAuthorization: { registered: boolean, organizer: boolean, approved: boolean } = {registered: false, approved: false, organizer: false};
+  registrations: Registration[] = [];
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -58,11 +60,10 @@ export class EventDetailsComponent implements OnInit {
     } catch(error) {
       console.error('Error loading event details', error);
     } finally {
-      await this.loadProfilePhotos();
       await this.loadUserPermissions();
+      await this.loadRegistrations();
+      await this.loadProfilePhotos();
       this.loading = false;
-      console.log(this.userAuthorization)
-      console.log(this.bannerUrl)
     }
   }
 
@@ -77,8 +78,17 @@ export class EventDetailsComponent implements OnInit {
           }
         }
       }
+      if (this.registrations) {
+        for (const registration of this.registrations) {
+          if (registration.userPhotoPath && !this.userPhotos[registration.userPhotoPath]) {
+            this.userPhotos[registration.userPhotoPath] = await this.axiosService.getImage('/photos/', registration.userPhotoPath);
+          } else if (!registration.userPhotoPath) {
+            registration.userPhotoPath = 'default';
+          }
+        }
+      }
     } catch (error) {
-      console.log('Error fetching banners: ', error);
+      console.log('Error fetching profile photos: ', error);
     }
   }
 
@@ -95,7 +105,20 @@ export class EventDetailsComponent implements OnInit {
         this.userAuthorization.approved = true;
       }
     } catch (error) {
-      console.log('Error fetching user permissions:', error);
+      console.error('Error fetching user permissions:', error);
+    }
+  }
+
+  async loadRegistrations() {
+    try {
+      const response = await this.axiosService.request(
+        "GET",
+        "/registrations/" + this.eventId,
+        {}
+      )
+      this.registrations = response.data;
+    } catch (error) {
+      console.error('Error fetching event registrations:', error);
     }
   }
 
@@ -122,7 +145,7 @@ export class EventDetailsComponent implements OnInit {
         window.location.reload();
       });
     } else {
-      console.error('Komentarz nie może być pusty')
+      console.error('Comment can not be empty');
     }
   }
 
@@ -176,5 +199,13 @@ export class EventDetailsComponent implements OnInit {
     } catch (error) {
       console.error('Error deleting event:', error);
     }
+  }
+
+  approveParticipant(id: string) {
+
+  }
+
+  rejectParticipant(id: string) {
+
   }
 }

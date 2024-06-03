@@ -41,7 +41,6 @@ export class DiscoverComponent {
           startTime: new Date(ev.startTime[0], ev.startTime[1] - 1, ev.startTime[2], ev.startTime[3], ev.startTime[4])
         };
       });
-      console.log(this.eventsFromDb)
     } catch (error) {
       console.error('Error fetching events: ', error);
     } finally {

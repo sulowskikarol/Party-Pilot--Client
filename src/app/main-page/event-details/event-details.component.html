@@ -25,7 +25,27 @@
     </div>
   </div>
 
-  <div class="comments-section mb-4">
+  <div class="participants-section mb-4 p-4 bg-light rounded shadow-sm">
+    <h2>Uczestnicy</h2>
+    <div class="d-flex overflow-auto">
+      <div *ngFor="let participant of registrations" class="participant-card m-2 position-relative">
+        <button class="btn p-0 text-reset text-decoration-none" [routerLink]="['/main/profile', participant.userId]">
+          <img [src]="userPhotos[participant.userPhotoPath]" class="img-fluid rounded-circle" alt="Avatar">
+          <p class="mt-2">{{ participant.userFirstName }}</p>
+        </button>
+        <div *ngIf="userAuthorization.organizer" class="action-buttons w-100 d-flex justify-content-around">
+          <button class="btn btn-outline-success" (click)="approveParticipant(participant.id)">
+            <i class="fas fa-check"></i>
+          </button>
+          <button class="btn btn-outline-danger" (click)="rejectParticipant(participant.id)">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="comments-section mb-4 p-4 bg-light rounded shadow-sm">
     <h2>Komentarze</h2>
     <!-- Add Comment Form -->
     <div *ngIf="userAuthorization.approved; else unauthorizedTemplate">
