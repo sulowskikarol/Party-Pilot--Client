@@ -1,8 +1,7 @@
 import {Component, inject} from '@angular/core';
-import {DatePipe, NgForOf, NgOptimizedImage} from "@angular/common";
+import {DatePipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {AxiosService} from "../../services/axios.service";
-import {resolve} from "@angular/compiler-cli";
 
 @Component({
   selector: 'app-discover',
@@ -11,7 +10,8 @@ import {resolve} from "@angular/compiler-cli";
     NgForOf,
     NgOptimizedImage,
     RouterLink,
-    DatePipe
+    DatePipe,
+    NgIf
   ],
   templateUrl: './discover.component.html',
   styleUrl: './discover.component.css'
@@ -21,23 +21,32 @@ export class DiscoverComponent {
   axiosService: AxiosService = inject(AxiosService);
   eventsFromDb: any[] = [];
   banners: { [key: string]: string } = {};
+  loading: boolean = true;
 
   ngOnInit() {
     this.loadEvents();
   }
 
   async loadEvents() {
+    this.loading = true;
     try {
-      await this.axiosService.request(
+      const response = await this.axiosService.request(
         "GET",
         "/events",
         {}
-      ).then(response => {
-        this.eventsFromDb = response.data;
-        this.loadBanners();
-      })
+      )
+      this.eventsFromDb = response.data.map((ev: any) => {
+        return {
+          ...ev,
+          startTime: new Date(ev.startTime[0], ev.startTime[1] - 1, ev.startTime[2], ev.startTime[3], ev.startTime[4])
+        };
+      });
+      console.log(this.eventsFromDb)
     } catch (error) {
       console.error('Error fetching events: ', error);
+    } finally {
+      await this.loadBanners();
+      this.loading = false;
     }
   }
 

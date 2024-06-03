@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {CommonModule, DatePipe} from "@angular/common";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {AxiosService} from "../../services/axios.service";
 import {EventService} from "../../services/event.service";
 import {EventDetails} from "../../models/event";
@@ -13,7 +13,8 @@ import {AuthService} from "../../services/auth.service";
   imports: [
     DatePipe,
     CommonModule,
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
@@ -31,6 +32,7 @@ export class EventDetailsComponent implements OnInit {
   eventId: string | null = null;
   loading: boolean = true;
   commentContent: any;
+  userAuthorization: { registered: boolean, organizer: boolean, approved: boolean } = {registered: false, approved: false, organizer: false};
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -39,10 +41,6 @@ export class EventDetailsComponent implements OnInit {
         this.loadEventDetails(this.eventId);
       }
     })
-  }
-
-  backToDiscover() {
-    this.router.navigate(['/main/discover']);
   }
 
   async loadEventDetails(eventId: string) {
@@ -57,12 +55,14 @@ export class EventDetailsComponent implements OnInit {
       } else {
         this.bannerUrl = 'assets/default_banner.jpg'
       }
-      console.log(this.eventDetails)
     } catch(error) {
       console.error('Error loading event details', error);
     } finally {
+      await this.loadProfilePhotos();
+      await this.loadUserPermissions();
       this.loading = false;
-      this.loadProfilePhotos();
+      console.log(this.userAuthorization)
+      console.log(this.bannerUrl)
     }
   }
 
@@ -79,6 +79,23 @@ export class EventDetailsComponent implements OnInit {
       }
     } catch (error) {
       console.log('Error fetching banners: ', error);
+    }
+  }
+
+  async loadUserPermissions() {
+    try {
+      const response = await this.axiosService.request(
+        "GET",
+        "/registrations/" + this.eventId + "/check-authorization",
+        {}
+      )
+      this.userAuthorization = response.data;
+      if (this.userAuthorization.organizer) {
+        this.userAuthorization.registered = true;
+        this.userAuthorization.approved = true;
+      }
+    } catch (error) {
+      console.log('Error fetching user permissions:', error);
     }
   }
 
@@ -105,7 +122,59 @@ export class EventDetailsComponent implements OnInit {
         window.location.reload();
       });
     } else {
-      console.error('Komentarz nie może być pusty!')
+      console.error('Komentarz nie może być pusty')
+    }
+  }
+
+  deleteComment(id: string) {
+    this.axiosService.request(
+      "DELETE",
+      "/comments/" + id,
+      {}
+    ).then (() => {
+      window.location.reload();
+    });
+  }
+
+  registerOnEvent() {
+    try {
+      this.axiosService.request(
+        "POST",
+        "/registrations",
+        { eventId: this.eventId }
+      ).then (() => {
+        window.location.reload();
+      });
+    } catch (error) {
+      console.error('Error during registering user on event:', error);
+    }
+  }
+
+  cancelRegistration() {
+    try {
+      this.axiosService.request(
+        "DELETE",
+        "registrations/" + this.eventId,
+        {}
+      ).then (() => {
+        window.location.reload();
+      });
+    } catch (error) {
+      console.error('Error during canceling user registration on event:', error)
+    }
+  }
+
+  cancelEvent() {
+    try {
+      this.axiosService.request(
+        "DELETE",
+        "/events/" + this.eventId,
+        {}
+      ).then(() => {
+        this.router.navigate(["/main/discover"]);
+      })
+    } catch (error) {
+      console.error('Error deleting event:', error);
     }
   }
 }

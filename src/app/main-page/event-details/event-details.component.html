@@ -17,7 +17,9 @@
         <p>{{ eventDetails.description }}</p>
       </div>
       <div class="col-md-4 text-center">
-        <button class="btn btn-primary btn-lg my-2">Zapisz się</button>
+        <button *ngIf="!userAuthorization.registered && !userAuthorization.organizer" class="btn btn-primary btn-lg my-2" (click)="registerOnEvent()">Zapisz się</button>
+        <button *ngIf="userAuthorization.registered && !userAuthorization.organizer" class="btn btn-primary btn-lg my-2 btn-danger" (click)="cancelRegistration()">Zrezygnuj</button>
+        <button *ngIf="userAuthorization.organizer" class="btn btn-primary btn-lg my-2 btn-danger" (click)="cancelEvent()">Odwołaj wydarzenie</button>
         <button class="btn btn-secondary btn-lg my-2">Dodaj do obserwowanych</button>
       </div>
     </div>
@@ -26,32 +28,45 @@
   <div class="comments-section mb-4">
     <h2>Komentarze</h2>
     <!-- Add Comment Form -->
-    <div class="card mt-4">
-      <div class="card-body">
-        <h5 class="card-title">Dodaj komentarz</h5>
-        <form (ngSubmit)="addComment()">
-          <div class="form-group">
-            <label for="commentContent">Treść komentarza</label>
-            <textarea id="commentContent" class="form-control" [(ngModel)]="commentContent" name="commentContent" rows="3" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary mt-3">Dodaj komentarz</button>
-        </form>
+    <div *ngIf="userAuthorization.approved; else unauthorizedTemplate">
+      <div class="card mt-4">
+        <div class="card-body">
+          <h5 class="card-title">Dodaj komentarz</h5>
+          <form (ngSubmit)="addComment()">
+            <div class="form-group">
+              <label for="commentContent">Treść komentarza</label>
+              <textarea id="commentContent" class="form-control" [(ngModel)]="commentContent" name="commentContent" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Dodaj komentarz</button>
+          </form>
+        </div>
       </div>
+
       <div class="card mb-3" *ngFor="let comment of eventDetails?.comments">
         <div class="row no-gutters">
           <div class="col-md-2 text-center">
-            <img [src]="userPhotos[comment.userPhoto]" class="img-fluid rounded-circle mt-3" alt="Avatar">
-            <p class="mt-2">{{ comment.userFirstName }}</p>
+            <button class="btn btn-link p-0 text-reset text-decoration-none" [routerLink]="['/main/profile', comment.user_id]">
+              <img [src]="userPhotos[comment.userPhoto]" class="img-fluid rounded-circle mt-3" alt="Avatar">
+              <p class="mt-2">{{ comment.userFirstName }}</p>
+            </button>
           </div>
           <div class="col-md-10">
-            <div class="card-body">
+            <div class="card-body position-relative">
               <p class="card-text">{{ comment.commentContent }}</p>
               <p class="card-text"><small class="text-muted">{{ comment.createdAt | date:'short' }}</small></p>
+              <button class="btn btn-link position-absolute text-decoration-none" style="bottom: 10px; right: 10px;" (click)="deleteComment(comment.id)">
+                <i class="fas fa-times"></i> Usuń
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <ng-template #unauthorizedTemplate>
+      <p>Komentarze dostępne dla zarejestrowanych użytkowników</p>
+    </ng-template>
+
   </div>
 </div>
 <ng-template #loadingTemplate>
