@@ -7,6 +7,10 @@ import {EventDetails} from "../../models/event";
 import {FormsModule} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Registration} from "../../models/registration";
+import {MatDialog} from "@angular/material/dialog";
+import {JoinRequestsDialogComponent} from "../join-request-dialog/join-request-dialog.component";
+import {MatButton} from "@angular/material/button";
+import {User} from "../../models/user";
 
 @Component({
   selector: 'app-event-details',
@@ -15,7 +19,8 @@ import {Registration} from "../../models/registration";
     DatePipe,
     CommonModule,
     FormsModule,
-    RouterLink
+    RouterLink,
+    MatButton
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
@@ -26,14 +31,17 @@ export class EventDetailsComponent implements OnInit {
   axiosService: AxiosService = inject(AxiosService);
   authService: AuthService = inject(AuthService);
   eventService: EventService = inject(EventService);
+  dialog: MatDialog = inject(MatDialog);
 
   eventDetails: EventDetails | null = null;
+  organizerDetails: any;
   userPhotos: {[key: string]: string} = {['default']: 'assets/default_banner.jpg'}
   bannerUrl: string | null = null;
   eventId: string | null = null;
   loading: boolean = true;
   commentContent: any;
   userAuthorization: { registered: boolean, organizer: boolean, approved: boolean } = {registered: false, approved: false, organizer: false};
+  confirmedRegistrations: Registration[] = [];
   registrations: Registration[] = [];
 
   ngOnInit() {
@@ -43,6 +51,13 @@ export class EventDetailsComponent implements OnInit {
         this.loadEventDetails(this.eventId);
       }
     })
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(JoinRequestsDialogComponent, {
+      width: '500px',
+      data: { registrations: this.registrations, userPhotos: this.userPhotos },
+    });
   }
 
   async loadEventDetails(eventId: string) {
@@ -57,6 +72,13 @@ export class EventDetailsComponent implements OnInit {
       } else {
         this.bannerUrl = 'assets/default_banner.jpg'
       }
+
+      const organizerResponse = await this.axiosService.request(
+        "GET",
+        "/users/" + this.eventDetails?.userId,
+        {}
+      )
+      this.organizerDetails = organizerResponse.data;
     } catch(error) {
       console.error('Error loading event details', error);
     } finally {
@@ -87,6 +109,20 @@ export class EventDetailsComponent implements OnInit {
           }
         }
       }
+      if (this.confirmedRegistrations) {
+        for (const registration of this.confirmedRegistrations) {
+          if (registration.userPhotoPath && !this.userPhotos[registration.userPhotoPath]) {
+            this.userPhotos[registration.userPhotoPath] = await this.axiosService.getImage('/photos/', registration.userPhotoPath);
+          } else if (!registration.userPhotoPath) {
+            registration.userPhotoPath = 'default';
+          }
+        }
+      }
+      if (this.organizerDetails.profilePhotoPath && !this.userPhotos[this.organizerDetails.profilePhotoPath]) {
+        this.userPhotos[this.organizerDetails.profilePhotoPath] = await this.axiosService.getImage('/photos/', this.organizerDetails.profilePhotoPath);
+      } else if (!this.organizerDetails.profilePhotoPath) {
+        this.organizerDetails.profilePhotoPath = 'default';
+      }
     } catch (error) {
       console.log('Error fetching profile photos: ', error);
     }
@@ -113,10 +149,19 @@ export class EventDetailsComponent implements OnInit {
     try {
       const response = await this.axiosService.request(
         "GET",
-        "/registrations/" + this.eventId,
+        "/registrations/" + this.eventId + "/confirmed",
         {}
       )
-      this.registrations = response.data;
+      this.confirmedRegistrations = response.data;
+
+      if (this.userAuthorization.organizer) {
+        const response = await this.axiosService.request(
+          "GET",
+          "/registrations/" + this.eventId,
+          {}
+        )
+        this.registrations = response.data;
+      }
     } catch (error) {
       console.error('Error fetching event registrations:', error);
     }
@@ -199,13 +244,5 @@ export class EventDetailsComponent implements OnInit {
     } catch (error) {
       console.error('Error deleting event:', error);
     }
-  }
-
-  approveParticipant(id: string) {
-
-  }
-
-  rejectParticipant(id: string) {
-
   }
 }

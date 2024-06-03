@@ -26,21 +26,23 @@
   </div>
 
   <div class="participants-section mb-4 p-4 bg-light rounded shadow-sm">
-    <h2>Uczestnicy</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Uczestnicy</h2>
+      <button *ngIf="userAuthorization.organizer" mat-button (click)="openDialog()">Wszystkie rejestracje</button>
+    </div>
     <div class="d-flex overflow-auto">
-      <div *ngFor="let participant of registrations" class="participant-card m-2 position-relative">
+      <div class="participant-card m-2 position-relative">
+        <button class="btn p-0 text-reset text-decoration-none" [routerLink]="['/main/profile', organizerDetails.id]">
+          <img [src]="userPhotos[organizerDetails.profilePhotoPath]" class="img-fluid rounded-circle" alt="Avatar">
+          <p class="mt-2 mb-0">{{ organizerDetails.firstName }}</p>
+          <p class="mt-0 mb-0">Organizator</p>
+        </button>
+      </div>
+      <div *ngFor="let participant of confirmedRegistrations" class="participant-card m-2 position-relative">
         <button class="btn p-0 text-reset text-decoration-none" [routerLink]="['/main/profile', participant.userId]">
           <img [src]="userPhotos[participant.userPhotoPath]" class="img-fluid rounded-circle" alt="Avatar">
-          <p class="mt-2">{{ participant.userFirstName }}</p>
+          <p class="mt-2 mb-0">{{ participant.userFirstName }}</p>
         </button>
-        <div *ngIf="userAuthorization.organizer" class="action-buttons w-100 d-flex justify-content-around">
-          <button class="btn btn-outline-success" (click)="approveParticipant(participant.id)">
-            <i class="fas fa-check"></i>
-          </button>
-          <button class="btn btn-outline-danger" (click)="rejectParticipant(participant.id)">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
       </div>
     </div>
   </div>

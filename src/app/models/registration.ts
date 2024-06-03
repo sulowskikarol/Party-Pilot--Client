@@ -4,6 +4,7 @@ export interface Registration {
   userId: string;
   userPhotoPath: string;
   userFirstName: string;
+  userLastName: string;
   status: string;
   additionalNotes: string;
   organizer: boolean;
