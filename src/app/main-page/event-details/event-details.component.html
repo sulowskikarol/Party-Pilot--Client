@@ -17,10 +17,11 @@
         <p>{{ eventDetails.description }}</p>
       </div>
       <div class="col-md-4 text-center">
-        <button *ngIf="!userAuthorization.registered && !userAuthorization.organizer" class="btn btn-primary btn-lg my-2" (click)="registerOnEvent()">Zapisz się</button>
-        <button *ngIf="userAuthorization.registered && !userAuthorization.organizer" class="btn btn-primary btn-lg my-2 btn-danger" (click)="cancelRegistration()">Zrezygnuj</button>
-        <button *ngIf="userAuthorization.organizer" class="btn btn-primary btn-lg my-2 btn-danger" (click)="cancelEvent()">Odwołaj wydarzenie</button>
-        <button class="btn btn-secondary btn-lg my-2">Dodaj do obserwowanych</button>
+        <button *ngIf="!userAuthorization.isRegistered && !userAuthorization.isOrganizer" class="btn btn-primary btn-lg my-2" (click)="registerOnEvent()">Zapisz się</button>
+        <button *ngIf="userAuthorization.isRegistered && !userAuthorization.isOrganizer" class="btn btn-primary btn-lg my-2 btn-danger" (click)="cancelRegistration()">Zrezygnuj</button>
+        <button *ngIf="userAuthorization.isOrganizer" class="btn btn-primary btn-lg my-2 btn-danger" (click)="cancelEvent()">Odwołaj wydarzenie</button>
+        <button *ngIf="!userAuthorization.isObserving" class="btn btn-secondary btn-lg my-2" (click)="addObservation()">Dodaj do obserwowanych</button>
+        <button *ngIf="userAuthorization.isObserving" class="btn btn-secondary btn-lg my-2" (click)="removeObservation()">Przestań obserwować</button>
       </div>
     </div>
   </div>
@@ -28,7 +29,7 @@
   <div class="participants-section mb-4 p-4 bg-light rounded shadow-sm">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2>Uczestnicy</h2>
-      <button *ngIf="userAuthorization.organizer" mat-button (click)="openDialog()">Wszystkie rejestracje</button>
+      <button *ngIf="userAuthorization.isOrganizer" mat-button (click)="openDialog()">Wszystkie rejestracje</button>
     </div>
     <div class="d-flex overflow-auto">
       <div class="participant-card m-2 position-relative">
@@ -50,7 +51,7 @@
   <div class="comments-section mb-4 p-4 bg-light rounded shadow-sm">
     <h2>Komentarze</h2>
     <!-- Add Comment Form -->
-    <div *ngIf="userAuthorization.approved; else unauthorizedTemplate">
+    <div *ngIf="userAuthorization.isApproved; else unauthorizedTemplate">
       <div class="card mt-4">
         <div class="card-body">
           <h5 class="card-title">Dodaj komentarz</h5>

@@ -40,7 +40,7 @@ export class EventDetailsComponent implements OnInit {
   eventId: string | null = null;
   loading: boolean = true;
   commentContent: any;
-  userAuthorization: { registered: boolean, organizer: boolean, approved: boolean } = {registered: false, approved: false, organizer: false};
+  userAuthorization: { isRegistered: boolean, isOrganizer: boolean, isApproved: boolean, isObserving: boolean } = {isRegistered: false, isApproved: false, isOrganizer: false, isObserving: false};
   confirmedRegistrations: Registration[] = [];
   registrations: Registration[] = [];
 
@@ -132,13 +132,13 @@ export class EventDetailsComponent implements OnInit {
     try {
       const response = await this.axiosService.request(
         "GET",
-        "/registrations/" + this.eventId + "/check-authorization",
+        "/check-authorization/" + this.eventId,
         {}
       )
       this.userAuthorization = response.data;
-      if (this.userAuthorization.organizer) {
-        this.userAuthorization.registered = true;
-        this.userAuthorization.approved = true;
+      if (this.userAuthorization.isOrganizer) {
+        this.userAuthorization.isRegistered = true;
+        this.userAuthorization.isApproved = true;
       }
     } catch (error) {
       console.error('Error fetching user permissions:', error);
@@ -154,7 +154,7 @@ export class EventDetailsComponent implements OnInit {
       )
       this.confirmedRegistrations = response.data;
 
-      if (this.userAuthorization.organizer) {
+      if (this.userAuthorization.isOrganizer) {
         const response = await this.axiosService.request(
           "GET",
           "/registrations/" + this.eventId,
@@ -243,6 +243,34 @@ export class EventDetailsComponent implements OnInit {
       })
     } catch (error) {
       console.error('Error deleting event:', error);
+    }
+  }
+
+  addObservation() {
+    try {
+      this.axiosService.request(
+        "POST",
+        "/observations/" + this.eventId,
+        {}
+      ).then(() => {
+        this.userAuthorization.isObserving = true;
+      });
+    } catch (error) {
+      console.error('Error adding event observation:', error);
+    }
+  }
+
+  removeObservation() {
+    try {
+      this.axiosService.request(
+        "DELETE",
+        "/observations/" + this.eventId,
+        {}
+      ).then(() => {
+        this.userAuthorization.isObserving = false;
+      });
+    } catch (error) {
+      console.error('Error deleting event observation:', error);
     }
   }
 }

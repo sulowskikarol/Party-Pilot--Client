@@ -60,4 +60,18 @@ export class ObservedComponent {
       console.log('Error fetching banners: ', error);
     }
   }
+
+  removeObservation(eventId: string) {
+    try {
+      this.axiosService.request(
+        "DELETE",
+        "/observations/" + eventId,
+        {}
+      ).then(() => {
+        window.location.reload();
+      })
+    } catch (error) {
+      console.error('Error deleting observation: ', error);
+    }
+  }
 }
