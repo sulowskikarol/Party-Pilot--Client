@@ -1,0 +1,62 @@
+<div class="profile-card">
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <div class="profile-image">
+      <img id="profilePic" [src]="photoUrl" alt="Profile Picture">
+      <input *ngIf="canEdit" type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)">
+      <label *ngIf="canEdit" for="fileInput" class="upload-icon">
+        <img src="assets/icons/edit.png" alt="Upload Icon">
+      </label>
+    </div>
+    <div class="invalid-alert" *ngIf="photoError">
+      {{ photoError }}
+    </div>
+    <div class="profile-details">
+        <div class="field">
+          <label for="first-name">Imię</label>
+          <input type="text"
+                 id="first-name"
+                 placeholder="Imię"
+                 formControlName="firstName"
+                 [class]="{'invalid-alert' : profileForm.get('firstName')?.invalid}"
+          >
+          <div class="invalid-alert" *ngIf="profileForm.get('firstName')?.invalid">
+            Imie jest wymagane.
+          </div>
+        </div>
+        <div class="field">
+          <label for="last-name">Nazwisko</label>
+          <input type="text"
+                 id="last-name"
+                 placeholder="Nazwisko"
+                 formControlName="lastName"
+                 [class]="{'invalid-alert' : profileForm.get('lastName')?.invalid}"
+          >
+          <div class="invalid-alert" *ngIf="profileForm.get('lastName')?.invalid">
+            Nazwisko jest wymagane.
+          </div>
+        </div>
+        <div class="field">
+          <label for="phone">Numer Telefonu</label>
+          <input type="tel"
+                 id="phone"
+                 placeholder="Numer Telefonu"
+                 formControlName="phoneNumber"
+                 [class]="{'invalid-alert': profileForm.get('phoneNumber')?.invalid}"
+          >
+          <div class="invalid-alert" *ngIf="profileForm.get('phoneNumber')?.invalid">
+            Numer telefonu jest wymagany.
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Adres Email</label>
+          <input type="email"
+                 id="email"
+                 placeholder="Adres Email"
+                 [value]="profileForm.get('email')?.value"
+                 disabled>
+        </div>
+      <button *ngIf="canEdit" type="submit">Potwierdź</button>
+      <button *ngIf="canEdit" type="button" (click)="onCancel()">Anuluj</button>
+    </div>
+  </form>
+</div>

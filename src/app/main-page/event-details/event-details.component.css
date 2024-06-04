@@ -1,0 +1,68 @@
+.banner img {
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.event-details {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.event-schedule {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.comments-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.comments-section .card {
+  border: none;
+  background-color: #f8f9fa;
+}
+
+.comments-section .card .card-body {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.participant-card {
+  flex: 0 0 auto;
+  width: 150px;
+  text-align: center;
+}
+
+.participant-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.action-buttons button {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.action-buttons .btn-outline-success {
+  border-color: green;
+  color: green;
+}
+
+.action-buttons .btn-outline-danger {
+  border-color: red;
+  color: red;
+}
+
+@media screen and (max-width: 630px) {
+  .comments-section img {
+    max-width: 6em;
+  }
+}
+

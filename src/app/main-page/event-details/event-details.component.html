@@ -1,0 +1,97 @@
+<div class="container mt-4" *ngIf="!loading && eventDetails; else loadingTemplate">
+  <div class="banner mb-4">
+    <img [src]="bannerUrl" class="img-fluid w-100" alt="Event Banner">
+  </div>
+
+  <div class="event-details mb-4 p-4 bg-light rounded shadow-sm">
+    <div class="row">
+      <div class="col-md-8">
+        <h1 class="display-4">{{ eventDetails.eventName }}</h1>
+        <p class="lead"><strong>Rozpoczęcie:</strong>
+          {{ eventDetails.startTime | date:'fullDate' }} at {{ eventDetails.startTime | date:'shortTime' }}
+        </p>
+        <p class="lead"><strong>Zakończenie:</strong>
+          {{ eventDetails.endTime | date:'fullDate' }} at {{ eventDetails.endTime | date:'shortTime' }}
+        </p>
+        <p class="lead"><strong>Lokalizacja:</strong> {{ eventDetails.location }}</p>
+        <p>{{ eventDetails.description }}</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <button *ngIf="!userAuthorization.isRegistered && !userAuthorization.isOrganizer" class="btn btn-primary btn-lg my-2" (click)="registerOnEvent()">Zapisz się</button>
+        <button *ngIf="userAuthorization.isRegistered && !userAuthorization.isOrganizer" class="btn btn-primary btn-lg my-2 btn-danger" (click)="cancelRegistration()">Zrezygnuj</button>
+        <button *ngIf="userAuthorization.isOrganizer" class="btn btn-primary btn-lg my-2 btn-danger" (click)="cancelEvent()">Odwołaj wydarzenie</button>
+        <button *ngIf="!userAuthorization.isObserving" class="btn btn-secondary btn-lg my-2" (click)="addObservation()">Dodaj do obserwowanych</button>
+        <button *ngIf="userAuthorization.isObserving" class="btn btn-secondary btn-lg my-2" (click)="removeObservation()">Przestań obserwować</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="participants-section mb-4 p-4 bg-light rounded shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Uczestnicy</h2>
+      <button *ngIf="userAuthorization.isOrganizer" mat-button (click)="openDialog()">Wszystkie rejestracje</button>
+    </div>
+    <div class="d-flex overflow-auto">
+      <div class="participant-card m-2 position-relative">
+        <button class="btn p-0 text-reset text-decoration-none" [routerLink]="['/main/profile', organizerDetails.id]">
+          <img [src]="userPhotos[organizerDetails.profilePhotoPath]" class="img-fluid rounded-circle" alt="Avatar">
+          <p class="mt-2 mb-0">{{ organizerDetails.firstName }}</p>
+          <p class="mt-0 mb-0">Organizator</p>
+        </button>
+      </div>
+      <div *ngFor="let participant of confirmedRegistrations" class="participant-card m-2 position-relative">
+        <button class="btn p-0 text-reset text-decoration-none" [routerLink]="['/main/profile', participant.userId]">
+          <img [src]="userPhotos[participant.userPhotoPath]" class="img-fluid rounded-circle" alt="Avatar">
+          <p class="mt-2 mb-0">{{ participant.userFirstName }}</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="comments-section mb-4 p-4 bg-light rounded shadow-sm">
+    <h2>Komentarze</h2>
+    <!-- Add Comment Form -->
+    <div *ngIf="userAuthorization.isApproved; else unauthorizedTemplate">
+      <div class="card mt-4">
+        <div class="card-body">
+          <h5 class="card-title">Dodaj komentarz</h5>
+          <form (ngSubmit)="addComment()">
+            <div class="form-group">
+              <label for="commentContent">Treść komentarza</label>
+              <textarea id="commentContent" class="form-control" [(ngModel)]="commentContent" name="commentContent" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Dodaj komentarz</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mb-3" *ngFor="let comment of eventDetails?.comments">
+        <div class="row no-gutters">
+          <div class="col-md-2 text-center">
+            <button class="btn btn-link p-0 text-reset text-decoration-none" [routerLink]="['/main/profile', comment.user_id]">
+              <img [src]="userPhotos[comment.userPhoto]" class="img-fluid rounded-circle mt-3" alt="Avatar">
+              <p class="mt-2">{{ comment.userFirstName }}</p>
+            </button>
+          </div>
+          <div class="col-md-10">
+            <div class="card-body position-relative">
+              <p class="card-text">{{ comment.commentContent }}</p>
+              <p class="card-text"><small class="text-muted">{{ comment.createdAt | date:'short' }}</small></p>
+              <button *ngIf="comment.user_id == authService.getUserId()" class="btn btn-link position-absolute text-decoration-none" style="bottom: 10px; right: 10px;" (click)="deleteComment(comment.id)">
+                <i class="fas fa-times"></i> Usuń
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #unauthorizedTemplate>
+      <p>Komentarze dostępne dla zarejestrowanych użytkowników</p>
+    </ng-template>
+
+  </div>
+</div>
+<ng-template #loadingTemplate>
+  <p>Ładowanie...</p>
+</ng-template>

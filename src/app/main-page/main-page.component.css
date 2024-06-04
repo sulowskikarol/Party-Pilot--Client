@@ -1,0 +1,252 @@
+/*Header*/
+header {
+  height: 10vh;
+  background: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 0 2em;
+}
+
+header #logo {
+  height: 8vh;
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 30vw;
+  background: #EDEDED;
+  height: fit-content;
+  display: flex;
+  border: 3px solid #6790B6;
+  border-radius: 1em;
+  position: relative;
+}
+
+.search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  margin: 0.2em 1.5em;
+  font-size: 1em;
+  letter-spacing: 0.2em;
+  outline: none;
+}
+
+.search-bar img {
+  width: auto;
+  height: 1.5em;
+  margin: 0.3em 0.5em;
+  position: absolute;
+  right: 0;
+}
+
+.profile-button {
+  background: #FFFFFF;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  border-radius: 1em;
+  border: none;
+  padding: 0.5em;
+  margin: 0;
+}
+
+.profile-button:hover {
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.5em;
+}
+
+.profile-button label {
+  padding: 0 0.3em;
+  font-size: 1.2em;
+  letter-spacing: 0.2em;
+}
+
+.profile-button img {
+  width: 5vh;
+  height: 5vh;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+/* main */
+main {
+  display: flex;
+  background: #FFFFFF;
+  width: 80vw;
+  height: 80vh;
+  margin: 2vh auto;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+}
+
+.render-space {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.left-bar {
+  width: 18vw;
+  max-width: 20em;
+  flex: none;
+  height: 100%;
+}
+
+.identity-space {
+  background: #F2F2F2;
+  border-radius: 0.5em 0 0 0;
+  height: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.identity-space>img {
+  width: 12vh;
+  height: 12vh;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+}
+
+.identity-space>p {
+  margin: 0.5em 0 0 0;
+  text-align: center;
+  font-size: 1.3em;
+  font-family: 'verdana';
+  letter-spacing: 0.25em;
+  color: #666666;
+}
+
+nav {
+  background: #E7E7E7;
+  height: 65%;
+  border-radius: 0 0 0 0.5em;
+}
+
+nav ul {
+  margin: 0;
+  list-style-type: none;
+  padding: 0.3em 0.5em 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+nav ul li {
+  cursor: pointer;
+  border-top: 0.05em solid #C1C1C1;
+  border-bottom: 0.05em solid #C1C1C1;
+  margin-bottom: 0.5em;
+  padding: 0.1em 0;
+}
+
+nav ul li:last-child {
+  margin-top: auto;
+}
+
+nav ul li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  color: #666666;
+}
+
+nav ul li a:hover {
+  background: linear-gradient(90deg, #cccccc 0%, #E7E7E7 49%, #cccccc 100%);
+  mix-blend-mode: darken;
+}
+
+.active-button {
+  background: linear-gradient(90deg, #BBBBBB 0%, #E7E7E7 49%, #BBBBBB 100%);
+  mix-blend-mode: darken;
+}
+
+nav .icon {
+  height: 3vh;
+  padding: 0 0.5em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header {
+    height: auto;
+    padding: 1em;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: 50vw;
+    margin-top: 0.5em;
+  }
+
+  main {
+    flex-direction: column;
+    height: auto;
+    width: 95%;
+  }
+
+  .left-bar {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .identity-space {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+  }
+
+  .identity-space>p {
+    margin-left: 1em;
+    font-size: 1em;
+  }
+
+  nav {
+    height: auto;
+    border-radius: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  nav ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0;
+  }
+
+  nav ul li {
+    border: none;
+    margin: 0 0.5em;
+    height:100%;
+  }
+
+  nav ul li a {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-button {
+    flex-direction: row;
+    margin-top: 0.5em;
+  }
+}
