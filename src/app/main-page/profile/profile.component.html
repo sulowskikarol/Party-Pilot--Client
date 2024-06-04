@@ -55,8 +55,8 @@
                  [value]="profileForm.get('email')?.value"
                  disabled>
         </div>
+      <button *ngIf="canEdit" type="submit">Potwierdź</button>
       <button *ngIf="canEdit" type="button" (click)="onCancel()">Anuluj</button>
-      <button *ngIf="canEdit" [disabled]="profileForm.invalid" type="submit">Potwierdź</button>
     </div>
   </form>
 </div>

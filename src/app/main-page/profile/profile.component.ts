@@ -34,7 +34,7 @@ export class ProfileComponent {
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     phoneNumber: new FormControl('', Validators.required),
-    profilePhotoPath: new FormControl('', Validators.required),
+    profilePhotoPath: new FormControl(''),
     email: new FormControl('', Validators.required)
   })
 
