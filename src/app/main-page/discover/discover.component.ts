@@ -32,7 +32,7 @@ export class DiscoverComponent {
     try {
       const response = await this.axiosService.request(
         "GET",
-        "/events",
+        "/events/current",
         {}
       )
       this.eventsFromDb = response.data.map((ev: any) => {
