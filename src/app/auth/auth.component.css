@@ -42,7 +42,7 @@ main {
 
   .content img {
     width: 15em;
-    border-radius: 1em;
+    border-radius: 3em;
     box-shadow: 0 0.4em 0.8em rgba(0, 0, 0, 0.3);
     margin-bottom: 1.5em;
   }

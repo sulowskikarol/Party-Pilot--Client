@@ -23,7 +23,7 @@ import {AuthService} from "../../services/auth.service";
           <input id="password" type="password" formControlName="password" placeholder="Hasło">
           <button type="submit" class="login-button">Zarejestruj</button>
         </form>
-        <h4>Jesteś już użytkownikiem Party Pilot? <a routerLink="/auth/login">Zaloguj się</a></h4>
+        <h4>Masz już konto? <a routerLink="/auth/login">Zaloguj się</a></h4>
       </section>
     </div>
   `,

@@ -60,3 +60,9 @@
   color: red;
 }
 
+@media screen and (max-width: 630px) {
+  .comments-section img {
+    max-width: 6em;
+  }
+}
+

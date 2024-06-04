@@ -3,7 +3,7 @@
   <p class="text-center m-sm-4" *ngIf="eventsFromDb.length === 0">Brak obserwowanych wydarzeń</p>
   <div class="events-grid" *ngIf="!loading; else onLoading">
     <div class="event-card" *ngFor="let event of eventsFromDb">
-      <div [routerLink]="['/main/event', event.id]">
+      <div [routerLink]="['/main/event', event.eventId]">
         <img [src]="banners[event.id]" alt="Event banner">
         <div class="event-info">
           <div class="event-time">{{ event.startTime | date: "EEE, d MMM 'at' hh:mm" }}</div>
