@@ -1,1 +1,18 @@
-<p>observed works!</p>
+<div class="event-container">
+  <h1>Obserwowane wydarzenia</h1>
+  <p class="text-center m-sm-4" *ngIf="eventsFromDb.length === 0">Brak obserwowanych wydarzeń</p>
+  <div class="events-grid" *ngIf="!loading; else onLoading">
+    <div class="event-card" *ngFor="let event of eventsFromDb" [routerLink]="['/main/event', event.id]">
+      <img [src]="banners[event.id]" alt="Event banner">
+      <div class="event-info">
+        <div class="event-time">{{ event.startTime | date: "EEE, d MMM 'at' hh:mm" }}</div>
+        <div class="event-name">{{ event.eventName }}</div>
+        <div class="event-location">{{ event.location }}</div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #onLoading>
+    <p>Ładowanie...</p>
+  </ng-template>
+</div>

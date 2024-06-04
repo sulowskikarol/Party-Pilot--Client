@@ -35,7 +35,7 @@ export class EventDetailsComponent implements OnInit {
 
   eventDetails: EventDetails | null = null;
   organizerDetails: any;
-  userPhotos: {[key: string]: string} = {['default']: 'assets/default_banner.jpg'}
+  userPhotos: {[key: string]: string} = {['default']: 'assets/default_photo.png'}
   bannerUrl: string | null = null;
   eventId: string | null = null;
   loading: boolean = true;
