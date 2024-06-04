@@ -16,6 +16,13 @@ section {
   justify-content: center;
 }
 
+p {
+  font-size: 0.9em;
+  color: red;
+  text-align: center;
+  margin: 0;
+}
+
 h1 {
   font-size: 1.5em;
 }
